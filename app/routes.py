@@ -10,26 +10,27 @@ from app.forms import RegistrationForm
 from app import db
 
 
-
-# def index():
-#     user = {'username': 'Miguel'}
-#     posts = [
-#         {
-#             'author': {'username': 'John'},
-#             'body': 'Beautiful day in Portland!'
-#         },
-#         {
-#             'author': {'username': 'Susan'},
-#             'body': 'The Avengers movie was so cool!'
-#         }
-#     ]
-#     return render_template('index.html', title='Home', user=user, posts=posts)
+@app.route('/')
+@app.route('/index')
+def index():
+    user = {'username': 'Miguel'}
+    posts = [
+        {
+            'author': {'username': 'John'},
+            'body': 'Beautiful day in Portland!'
+        },
+        {
+            'author': {'username': 'Susan'},
+            'body': 'The Avengers movie was so cool!'
+        }
+    ]
+    return render_template('index.html', title='Home', user=user, posts=posts)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # if current_user.is_authenticated:
-        # return redirect(url_for('index'))
+    if current_user.is_authenticated:
+        return redirect(url_for('project'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -38,13 +39,12 @@ def login():
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
-        # if not next_page or url_parse(next_page).netloc != '':
-            # next_page = url_for('index')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('project')
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
-@app.route('/')
-@app.route('/index')
+
 @app.route('/project')
 @login_required
 def project():
@@ -61,7 +61,7 @@ def project():
             'cost': '$ 20.50',
             'completion': '28%',
             'image': 'solar-car.jpg',
-            'description': 'The solared power car is a car made from materials like wood and plastic wheels that is powered by a solar panel attached to the top. you can control it with sensors, or go the remote control option.'
+            'description': 'The solared power car is a car made from materials like wood and plastic that is powered by a solar panel attached to the top. You can control it with sensors, or go the remote control option.'
 
         },
         {
