@@ -38,7 +38,7 @@
       /* this adds the "card" effect */
       padding: 16px;
       text-align: center;
-      background-color: #b39c9c;
+      background-color: #aab667;
     }
 
     /* Responsive columns - one column layout (vertical) on small screens */
@@ -56,11 +56,13 @@
   {% for project in projects %}
   <div class="column">
     <div class="card">
-      <p><img src="{{url_for('static', filename=project.image)}}" align="middle" height="200" /></p>
       <h3>{{ project.name }}</h3>
-      <p>Cost: {{ project.cost }}</p>
-      <p>{{ project.completion}} completed</p>
-      <p>Description: {{project.description}}</p>
+      <p><img src="{{url_for('static', filename=project.image)}}" align="middle" height="200" /></p>
+      <p>Avg. Cost: {{ project.cost }}</p>
+      <p>{{project.description}}</p>
+      {% for link_text, link_url in project.related_links.items() %}
+      <p> <a href="{{ link_url }}">{{link_text}}</a></p>
+      {% endfor %}
 
     </div>
   </div>
